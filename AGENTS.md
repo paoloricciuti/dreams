@@ -1,31 +1,9 @@
-## Project Configuration
+## Design Context
 
-- **Language**: TypeScript
-- **Package Manager**: pnpm
-- **Add-ons**: prettier, eslint, vitest, playwright, sveltekit-adapter, mcp, experimental
+Read `PRODUCT.md` (strategy) and `DESIGN.md` (visual system, currently a seed) before doing any design work. The short version:
 
----
-
-You are able to use the Svelte MCP server, where you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use the available tools effectively:
-
-## Available Svelte MCP Tools:
-
-### 1. list-sections
-
-Use this FIRST to discover all available documentation sections. Returns a structured list with titles, use_cases, and paths.
-When asked about Svelte or SvelteKit topics, ALWAYS use this tool at the start of the chat to find relevant sections.
-
-### 2. get-documentation
-
-Retrieves full documentation content for specific sections. Accepts single or multiple sections.
-After calling the list-sections tool, you MUST analyze the returned documentation sections (especially the use_cases field) and then use the get-documentation tool to fetch ALL documentation sections that are relevant for the user's task.
-
-### 3. svelte-autofixer
-
-Analyzes Svelte code and returns issues and suggestions.
-You MUST use this tool whenever writing Svelte code before sending it to the user. Keep calling it until no issues or suggestions are returned.
-
-### 4. playground-link
-
-Generates a Svelte Playground link with the provided code.
-After completing the code, ask the user if they want a playground link. Only call this tool after user confirmation and NEVER if code was written to files in their project.
+- An art project: a public diary of real dreams, each paired with an AI-generated image. **The design IS the product** (brand register, web platform); the landing page is the artwork itself.
+- Feel: eerie, cinematic, mysterious — dreamlike wonder. The world is _overexposed pale light_ (cold fog, never warm cream, never purple-black darkness); the dream images are the only saturated color.
+- Principles: the page is the artwork; dream logic over web logic; eerie, never spooky; each dream is its own world; a real diary, honestly kept.
+- Never: generic SaaS landing scaffolding, Instagram-style uniform grids, goth/horror kitsch, anonymous minimal portfolio templates.
+- Accessibility: WCAG AA contrast everywhere; every animation has a real `prefers-reduced-motion` alternative; alt text written in the diary's voice.
