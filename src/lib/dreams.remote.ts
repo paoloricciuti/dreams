@@ -1,6 +1,6 @@
 import * as v from 'valibot';
 import { error } from '@sveltejs/kit';
-import { query } from '$app/server';
+import { query, prerender } from '$app/server';
 import { list_dreams } from '$lib/server/atproto';
 import type { Dream } from '$lib/dreams';
 
@@ -18,13 +18,19 @@ export const get_dreams = query(async (): Promise<Dream[]> => {
 });
 
 /** A single dream and its neighbouring nights. */
-export const get_dream = query(v.string(), async (slug): Promise<DreamPage> => {
-	const dreams = await list_dreams();
-	const index = dreams.findIndex((d) => d.slug === slug);
-	if (index === -1) error(404, 'No such dream was logged.');
-	return {
-		dream: dreams[index],
-		night_before: dreams[index - 1],
-		night_after: dreams[index + 1]
-	};
-});
+export const get_dream = prerender(
+	v.string(),
+	async (slug): Promise<DreamPage> => {
+		const dreams = await list_dreams();
+		const index = dreams.findIndex((d) => d.slug === slug);
+		if (index === -1) error(404, 'No such dream was logged.');
+		return {
+			dream: dreams[index],
+			night_before: dreams[index - 1],
+			night_after: dreams[index + 1]
+		};
+	},
+	{
+		dynamic: true
+	}
+);
