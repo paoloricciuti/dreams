@@ -91,6 +91,17 @@ a {
 	border-radius: 2px;
 }
 
+/* view transitions — cross-document (SSR / full page) navigations opt in
+   here; client-side ones are driven from onNavigate in the root layout */
+@view-transition {
+	navigation: auto;
+}
+
+::view-transition-group(*) {
+	animation-duration: 0.55s;
+	animation-timing-function: var(--ease-fog);
+}
+
 @media (prefers-reduced-motion: reduce) {
 	*,
 	*::before,
@@ -99,5 +110,9 @@ a {
 		animation-iteration-count: 1 !important;
 		transition-duration: 0.01ms !important;
 		scroll-behavior: auto !important;
+	}
+
+	@view-transition {
+		navigation: none;
 	}
 }

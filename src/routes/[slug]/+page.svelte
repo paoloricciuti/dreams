@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { format_date } from '$lib/dreams';
+	import { dream_transition_name, format_date } from '$lib/dreams';
 	import { get_dream } from '$lib/dreams.remote';
 
 	let { params } = $props();
@@ -19,12 +19,18 @@
 
 <main>
 	<header class="clearing">
-		<figure style="aspect-ratio: {dream.aspect}" class:tall={dream.aspect < 1}>
+		<figure
+			style="aspect-ratio: {dream.aspect}"
+			style:view-transition-name={dream_transition_name('image', dream.slug)}
+			class:tall={dream.aspect < 1}
+		>
 			<img src={dream.image_url} alt={dream.alt} fetchpriority="high" />
 		</figure>
 		<div class="plate">
 			<time datetime={dream.date}>{format_date(dream.date)}</time>
-			<h1>{dream.title}</h1>
+			<h1 style:view-transition-name={dream_transition_name('title', dream.slug)}>
+				{dream.title}
+			</h1>
 		</div>
 	</header>
 
@@ -37,7 +43,7 @@
 
 	<footer aria-label="Neighbouring nights">
 		{#if data.night_before}
-			<a href="/3/{data.night_before.slug}">
+			<a href="/{data.night_before.slug}">
 				<span>the night before</span>
 				{data.night_before.title}
 			</a>
@@ -45,7 +51,7 @@
 			<span class="edge">this is the first night</span>
 		{/if}
 		{#if data.night_after}
-			<a class="after" href="/3/{data.night_after.slug}">
+			<a class="after" href="/{data.night_after.slug}">
 				<span>the night after</span>
 				{data.night_after.title}
 			</a>
@@ -103,20 +109,11 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		animation: clearing 2s var(--ease-fog) both;
-	}
-
-	@keyframes clearing {
-		from {
-			filter: blur(22px) saturate(0.15) brightness(1.15) contrast(0.8);
-			transform: scale(1.05);
-		}
 	}
 
 	.plate {
 		text-align: center;
 		margin-top: 2rem;
-		animation: settle 1.4s var(--ease-fog) 0.5s both;
 	}
 
 	@keyframes settle {
@@ -125,9 +122,12 @@
 		}
 	}
 
+	/* only the date fades in: the title carries a view-transition-name, and a
+	   fading ancestor would fight the snapshot the transition animates */
 	.plate time {
 		font-size: var(--text-sm);
 		color: var(--ink-soft);
+		animation: settle 1.4s var(--ease-fog) 0.5s both;
 	}
 
 	h1 {

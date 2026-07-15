@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { format_date, type Dream } from '$lib/dreams';
+	import { dream_transition_name, format_date, type Dream } from '$lib/dreams';
 	import { get_dreams } from '$lib/dreams.remote';
 
 	// chronological, oldest first — straight from the diary's atproto repo
@@ -62,7 +62,10 @@
 	<section class="field" aria-label="The dreams, newest first">
 		{#each dreams_newest_first as dream, i (dream.slug)}
 			<a href="/{dream.slug}" class="dream" style={field_place(dream)}>
-				<figure style="aspect-ratio: {dream.aspect}">
+				<figure
+					style="aspect-ratio: {dream.aspect}"
+					style:view-transition-name={dream_transition_name('image', dream.slug)}
+				>
 					<img
 						src={dream.image_url}
 						alt={dream.alt}
@@ -72,7 +75,9 @@
 				</figure>
 				<span class="label">
 					<time datetime={dream.date}>{format_date(dream.date)}</time>
-					<strong>{dream.title}</strong>
+					<strong style:view-transition-name={dream_transition_name('title', dream.slug)}
+						>{dream.title}</strong
+					>
 				</span>
 			</a>
 		{/each}
