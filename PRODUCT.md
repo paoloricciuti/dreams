@@ -10,7 +10,7 @@ web
 
 ## Users
 
-A general internet audience — people who land here from a shared link with zero context, in curiosity mode rather than task mode. Their job is not to *use* anything; it is to experience the front page and, if it takes hold, drift deeper. The author is the second user: the keeper of the archive, logging dreams over time.
+A general internet audience — people who land here from a shared link with zero context, in curiosity mode rather than task mode. Their job is not to _use_ anything; it is to experience the front page and, if it takes hold, drift deeper. The author is the second user: the keeper of the archive, logging dreams over time.
 
 ## Product Purpose
 
