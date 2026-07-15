@@ -7,3 +7,9 @@ bun.lockb
 
 # Miscellaneous
 /static/
+
+# Generated atproto lexicon schemas
+/src/lib/lexicons/
+
+# Local tooling state
+/.claude/

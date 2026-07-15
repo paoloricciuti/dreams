@@ -13,7 +13,7 @@ export default defineConfig({
 				experimental: { async: true }
 			},
 			adapter: adapter(),
-			experimental: { remoteFunctions: true, handleRenderingErrors: true }
+			experimental: { remoteFunctions: true }
 		})
 	],
 	test: {

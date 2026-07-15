@@ -1,0 +1,79 @@
+{
+	"lexicon": 1,
+	"id": "me.ricciuti.dreams.dream",
+	"defs": {
+		"main": {
+			"type": "record",
+			"description": "A single entry in the dream diary: a real dream, written down, paired with an image generated from it.",
+			"key": "any",
+			"record": {
+				"type": "object",
+				"required": [
+					"title",
+					"date",
+					"image",
+					"aspectWidth",
+					"aspectHeight",
+					"fragment",
+					"alt",
+					"story",
+					"createdAt"
+				],
+				"properties": {
+					"title": {
+						"type": "string",
+						"description": "The dream's title.",
+						"maxLength": 1280,
+						"maxGraphemes": 128
+					},
+					"date": {
+						"type": "string",
+						"description": "The date the dream was dreamed, as YYYY-MM-DD.",
+						"minLength": 10,
+						"maxLength": 10
+					},
+					"image": {
+						"type": "blob",
+						"description": "The generated dream image.",
+						"accept": ["image/*"],
+						"maxSize": 5000000
+					},
+					"aspectWidth": {
+						"type": "integer",
+						"description": "Width component of the image aspect ratio.",
+						"minimum": 1
+					},
+					"aspectHeight": {
+						"type": "integer",
+						"description": "Height component of the image aspect ratio.",
+						"minimum": 1
+					},
+					"fragment": {
+						"type": "string",
+						"description": "One line the dream said, shown in the serif voice.",
+						"maxLength": 2560,
+						"maxGraphemes": 256
+					},
+					"alt": {
+						"type": "string",
+						"description": "Alt text for the image, written the way the diary would describe it.",
+						"maxLength": 5120
+					},
+					"story": {
+						"type": "array",
+						"description": "The whole story, one item per paragraph.",
+						"items": {
+							"type": "string",
+							"maxLength": 20480
+						}
+					},
+					"createdAt": {
+						"type": "string",
+						"description": "When this entry was logged.",
+						"format": "datetime"
+					}
+				}
+			}
+		}
+	}
+}

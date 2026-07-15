@@ -1,0 +1,103 @@
+/* ————————————————————————————————————————————————
+   Dreams — “The Overexposed Dream”
+   A world with too much light. Cold pale fog; the
+   dream images are the only saturated things.
+   ———————————————————————————————————————————————— */
+
+:root {
+	/* color — cold, never warm-cream */
+	--bg: oklch(96.5% 0.006 235);
+	--bg-deep: oklch(93.5% 0.009 235);
+	--surface: oklch(98.2% 0.004 235);
+	--ink: oklch(23% 0.015 245);
+	--ink-soft: oklch(43% 0.022 245);
+	--line: oklch(85% 0.012 235);
+	--accent: oklch(46% 0.085 242);
+	--veil: oklch(97% 0.005 235);
+
+	/* type */
+	--font-dream: 'Gloock', 'Iowan Old Style', georgia, serif;
+	--font-diary: 'Karla Variable', 'Karla', 'Helvetica Neue', sans-serif;
+
+	/* scale — 1.333 ratio */
+	--text-xs: 0.8rem;
+	--text-sm: 0.9rem;
+	--text-base: 1.05rem;
+	--text-lg: 1.4rem;
+	--text-xl: clamp(1.8rem, 1.2rem + 2vw, 2.5rem);
+	--text-2xl: clamp(2.4rem, 1.5rem + 3.4vw, 3.7rem);
+	--text-3xl: clamp(3rem, 1.8rem + 5vw, 5.4rem);
+
+	/* motion */
+	--ease-drift: cubic-bezier(0.22, 1, 0.36, 1);
+	--ease-fog: cubic-bezier(0.16, 1, 0.3, 1);
+
+	/* z — semantic */
+	--z-veil: 10;
+	--z-nav: 20;
+	--z-summon: 30;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+}
+
+html {
+	background: var(--bg);
+	color: var(--ink);
+	font-family: var(--font-diary);
+	font-size: 100%;
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+	text-size-adjust: 100%;
+}
+
+body {
+	min-height: 100dvh;
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--font-dream);
+	font-weight: 400;
+	line-height: 1.08;
+	letter-spacing: -0.01em;
+	text-wrap: balance;
+}
+
+p {
+	text-wrap: pretty;
+}
+
+img {
+	max-width: 100%;
+	display: block;
+}
+
+a {
+	color: inherit;
+}
+
+::selection {
+	background: oklch(88% 0.03 242);
+	color: var(--ink);
+}
+
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 3px;
+	border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}

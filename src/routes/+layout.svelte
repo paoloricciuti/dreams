@@ -1,4 +1,7 @@
 <script lang="ts">
+	import '@fontsource/gloock/400.css';
+	import '@fontsource-variable/karla/index.css';
+	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
 
 	let { children } = $props();
