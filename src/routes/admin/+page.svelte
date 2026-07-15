@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { admin_logout, log_dream } from '$lib/admin.remote';
-	import { get_dreams } from '$lib/dreams.remote';
+	import { admin_logout, get_dreams_admin, log_dream } from '$lib/admin.remote';
 	import { format_date } from '$lib/dreams';
 	import { IMAGE_TYPES } from '$lib/dream_form';
 
@@ -79,7 +78,7 @@
 
 	<section class="diary">
 		<h2>The diary so far</h2>
-		{#each (await get_dreams()).toReversed() as dream (dream.slug)}
+		{#each (await get_dreams_admin()).toReversed() as dream (dream.slug)}
 			<a class="entry" href="/admin/{dream.slug}">
 				<time datetime={dream.date}>{format_date(dream.date)}</time>
 				<strong>{dream.title}</strong>

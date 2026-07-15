@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { edit_dream, remove_dream } from '$lib/admin.remote';
-	import { get_dream } from '$lib/dreams.remote';
+	import { edit_dream, get_dream_admin, remove_dream } from '$lib/admin.remote';
 	import { IMAGE_TYPES } from '$lib/dream_form';
 
 	let { params } = $props();
 
-	const dream = $derived((await get_dream(params.slug)).dream);
+	const dream = $derived(await get_dream_admin(params.slug));
 </script>
 
 <svelte:head>

@@ -1,5 +1,5 @@
 import * as v from 'valibot';
-import { invalid, redirect } from '@sveltejs/kit';
+import { error, invalid, redirect } from '@sveltejs/kit';
 import { form, query } from '$app/server';
 import {
 	assert_admin,
@@ -9,10 +9,25 @@ import {
 	start_admin_session
 } from '$lib/server/admin';
 import { create_dream, delete_dream, list_dreams, update_dream } from '$lib/server/atproto';
-import { get_dream, get_dreams } from '$lib/dreams.remote';
+import { trigger_deployment } from '$lib/server/deploy';
 import { IMAGE_TYPES, IMAGE_MAX_SIZE } from '$lib/dream_form';
 
 export const get_admin_status = query(async () => is_admin());
+
+/**
+ * All dreams, chronological — live from the PDS. The public list is
+ * prerendered and only updates on redeploy; the desk must see changes as soon
+ * as they are made.
+ */
+export const get_dreams_admin = query(async () => list_dreams());
+
+/** A single dream, live from the PDS — the edit form must never see a prerendered snapshot. */
+export const get_dream_admin = query(v.string(), async (slug) => {
+	const dreams = await list_dreams();
+	const dream = dreams.find((d) => d.slug === slug);
+	if (!dream) error(404, 'No such dream was logged.');
+	return dream;
+});
 
 export const admin_login = form(
 	v.object({
@@ -79,7 +94,10 @@ export const log_dream = form(
 		});
 
 		// it's safe to throw away the promise — the framework awaits it before responding
-		void get_dreams().refresh();
+		void get_dreams_admin().refresh();
+
+		// the public pages are prerendered — rebuild them with the new dream
+		await trigger_deployment();
 
 		redirect(303, `/${slug}`);
 	}
@@ -130,8 +148,11 @@ export const edit_dream = form(
 			image
 		});
 
-		void get_dreams().refresh();
-		void get_dream(data.slug).refresh();
+		void get_dreams_admin().refresh();
+		void get_dream_admin(data.slug).refresh();
+
+		// the public pages are prerendered — rebuild them with the rewritten dream
+		await trigger_deployment();
 
 		redirect(303, `/${data.slug}`);
 	}
@@ -146,7 +167,10 @@ export const remove_dream = form(
 
 		await delete_dream(slug);
 
-		void get_dreams().refresh();
+		void get_dreams_admin().refresh();
+
+		// the public pages are prerendered — rebuild them without the faded dream
+		await trigger_deployment();
 
 		redirect(303, '/admin');
 	}

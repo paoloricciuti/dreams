@@ -1,6 +1,6 @@
 import * as v from 'valibot';
 import { error } from '@sveltejs/kit';
-import { query, prerender } from '$app/server';
+import { prerender } from '$app/server';
 import { list_dreams } from '$lib/server/atproto';
 import type { Dream } from '$lib/dreams';
 
@@ -12,8 +12,11 @@ export type DreamPage = {
 	night_after: Dream | undefined;
 };
 
-/** All dreams in the diary, chronological (oldest first). */
-export const get_dreams = query(async (): Promise<Dream[]> => {
+/**
+ * All dreams in the diary, chronological (oldest first). Prerendered — when
+ * the diary changes, the admin dashboard triggers a redeploy to rebuild it.
+ */
+export const get_dreams = prerender(async (): Promise<Dream[]> => {
 	return list_dreams();
 });
 
