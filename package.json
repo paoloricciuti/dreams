@@ -20,6 +20,7 @@
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
+		"@ethercorps/sveltekit-og": "^4.3.0",
 		"@fontsource-variable/karla": "^5.2.8",
 		"@fontsource/gloock": "^5.2.8",
 		"@playwright/test": "^1.60.0",

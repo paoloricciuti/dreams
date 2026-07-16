@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { dream_transition_name, format_date } from '$lib/dreams';
 	import { get_dream } from '$lib/dreams.remote';
 
@@ -6,11 +7,26 @@
 
 	const data = $derived(await get_dream(params.slug));
 	const dream = $derived(data.dream);
+
+	// og:image must be absolute; at build time the origin comes from the
+	// ORIGIN env var (see prerender.origin in vite.config.ts)
+	const og_image = $derived(`${page.url.origin}/${dream.slug}/og.png`);
 </script>
 
 <svelte:head>
 	<title>{dream.title} — Dreams</title>
 	<meta name="description" content={dream.fragment} />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="{dream.title} — Dreams" />
+	<meta property="og:description" content={dream.fragment} />
+	<meta property="og:image" content={og_image} />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content={dream.alt} />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="{dream.title} — Dreams" />
+	<meta name="twitter:description" content={dream.fragment} />
+	<meta name="twitter:image" content={og_image} />
 </svelte:head>
 
 <nav>
