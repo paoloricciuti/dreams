@@ -140,9 +140,30 @@
 		padding: 0 clamp(1.5rem, 4vw, 4rem) clamp(4rem, 10vh, 7rem);
 	}
 
+	/* 1 = deep in the fog, 0 = clear. Registered so it can animate and inherit. */
+	@property --fog {
+		syntax: '<number>';
+		inherits: true;
+		initial-value: 1;
+	}
+
 	.dream {
 		display: block;
 		text-decoration: none;
+		/* scroll-driven: the fog clears as the dream rises, and is fully gone
+		   once its bottom edge is 15% of the viewport above the bottom */
+		animation: defog linear both;
+		animation-timeline: view(block 0% 15%);
+		animation-range: entry;
+	}
+
+	@keyframes defog {
+		from {
+			--fog: 1;
+		}
+		to {
+			--fog: 0;
+		}
 	}
 
 	figure {
@@ -153,17 +174,18 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		filter: blur(7px) saturate(0.25) brightness(1.1) contrast(0.85);
-		transform: scale(1.06);
-		transition:
-			filter 1.1s var(--ease-fog),
-			transform 1.1s var(--ease-fog);
+		filter: blur(calc(var(--fog) * 7px)) saturate(calc(1 - var(--fog) * 0.75))
+			brightness(calc(1 + var(--fog) * 0.1)) contrast(calc(1 - var(--fog) * 0.15));
+		transform: scale(calc(1 + var(--fog) * 0.06));
+		/* smooths both the hover reveal and the scroll-driven one inherited from .dream */
+		transition: --fog 1.1s var(--ease-fog);
 	}
 
+	/* a declaration set directly on the img beats the animated value inherited
+	   from .dream, so hover always clears whatever fog the scroll left behind */
 	.dream:hover img,
 	.dream:focus-visible img {
-		filter: none;
-		transform: scale(1);
+		--fog: 0;
 	}
 
 	.label {
@@ -190,11 +212,13 @@
 		font-size: var(--text-base);
 	}
 
-	/* touch and no-hover devices: the fog is thinner, the labels stay */
+	/* touch and no-hover devices: the labels stay; where the browser can't
+	   defog on scroll, fall back to a permanently thin fog instead */
 	@media (hover: none) {
-		figure img {
-			filter: blur(2px) saturate(0.7) brightness(1.05);
-			transform: scale(1.02);
+		@supports not (animation-timeline: view()) {
+			figure img {
+				--fog: 0.3;
+			}
 		}
 
 		.label {
