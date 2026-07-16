@@ -3,8 +3,10 @@ export type Dream = {
 	title: string;
 	/** ISO date the dream was logged */
 	date: string;
-	/** URL of the dream image, served from the author's PDS blob store */
+	/** URL of the dream image, fetched from the local endpoint for prerendering */
 	image_url: string;
+	/** URL of the dream image, served from the author's PDS blob store */
+	og_image_url: string;
 	/** width / height of the source image */
 	aspect: number;
 	/** one line the dream said, set in the serif voice */

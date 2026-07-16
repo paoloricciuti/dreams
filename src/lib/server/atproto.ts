@@ -1,14 +1,14 @@
+import {
+	ATPROTO_APP_PASSWORD,
+	ATPROTO_DID,
+	ATPROTO_HANDLE,
+	ATPROTO_SERVICE
+} from '$app/env/private';
+import type { Dream } from '$lib/dreams';
+import * as dream from '$lib/lexicons/me/ricciuti/dreams/dream';
 import { Client, getBlobCidString, l, type AtIdentifierString } from '@atproto/lex';
 import { PasswordSession } from '@atproto/lex-password-session';
 import { imageSize } from 'image-size';
-import {
-	ATPROTO_HANDLE,
-	ATPROTO_DID,
-	ATPROTO_SERVICE,
-	ATPROTO_APP_PASSWORD
-} from '$app/env/private';
-import * as dream from '$lib/lexicons/me/ricciuti/dreams/dream';
-import type { Dream } from '$lib/dreams';
 
 type Identity = {
 	did: AtIdentifierString;
@@ -48,7 +48,7 @@ async function resolve_identity(handle: string): Promise<Identity> {
 
 let identity: Promise<Identity> | undefined;
 
-function get_identity(): Promise<Identity> {
+export function get_identity(): Promise<Identity> {
 	identity ??= resolve_identity(ATPROTO_HANDLE);
 	// if resolution fails, allow the next request to retry instead of caching the error
 	identity.catch(() => (identity = undefined));
@@ -56,11 +56,13 @@ function get_identity(): Promise<Identity> {
 }
 
 function to_dream(uri: string, record: dream.Main, { did, service }: Identity): Dream {
+	const slug = uri.split('/').at(-1)!;
 	return {
-		slug: uri.split('/').at(-1)!,
+		slug,
 		title: record.title,
 		date: record.date,
-		image_url: `${service}/xrpc/com.atproto.sync.getBlob?did=${did}&cid=${getBlobCidString(record.image)}`,
+		image_url: `./${slug}/${getBlobCidString(record.image)}/img.png`,
+		og_image_url: `${service}/xrpc/com.atproto.sync.getBlob?did=${did}&cid=${getBlobCidString(record.image)}`,
 		aspect: record.aspectWidth / record.aspectHeight,
 		fragment: record.fragment,
 		alt: record.alt,

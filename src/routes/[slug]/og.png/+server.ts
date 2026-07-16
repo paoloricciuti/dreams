@@ -37,7 +37,7 @@ export const GET: RequestHandler = async ({ params }) => {
 	// parser is quadratic in attribute size — it hangs the process for minutes
 	const { body, head } = render(DreamOg, {
 		props: {
-			image: dream.image_url,
+			image: dream.og_image_url,
 			title: dream.title,
 			date: format_date(dream.date),
 			fragment: dream.fragment
