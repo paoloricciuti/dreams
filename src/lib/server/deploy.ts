@@ -1,4 +1,4 @@
-import { COOLIFY_URL, COOLIFY_TOKEN, COOLIFY_TAG } from '$app/env/private';
+import { DEPLOY_URL } from '$app/env/private';
 
 /**
  * Asks Coolify to rebuild and redeploy the app, so the prerendered pages (the
@@ -10,19 +10,19 @@ import { COOLIFY_URL, COOLIFY_TOKEN, COOLIFY_TAG } from '$app/env/private';
  * already safely in the repo, the site is just stale until the next deploy.
  */
 export async function trigger_deployment(): Promise<void> {
-	if (!COOLIFY_URL || !COOLIFY_TOKEN) {
-		console.warn(
-			'COOLIFY_URL / COOLIFY_TOKEN are not set — skipping redeploy, the prerendered pages will go stale'
-		);
+	if (!DEPLOY_URL) {
+		console.warn('DEPLOY_URL is not set — skipping redeploy, the prerendered pages will go stale');
 		return;
 	}
 
 	try {
-		const response = await fetch(`${COOLIFY_URL}/api/v1/deploy?tag=${COOLIFY_TAG}&force=true`, {
-			headers: { Authorization: `Bearer ${COOLIFY_TOKEN}` }
+		const response = await fetch(`${DEPLOY_URL}?buildCache=false`, {
+			method: 'POST'
 		});
 		if (!response.ok) {
-			throw new Error(`Coolify responded with ${response.status}: ${await response.text()}`);
+			throw new Error(
+				`Deployment trigger responded with ${response.status}: ${await response.text()}`
+			);
 		}
 	} catch (error) {
 		console.error(

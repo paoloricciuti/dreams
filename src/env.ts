@@ -22,16 +22,8 @@ export const variables = defineEnvVars({
 		description: 'Password that guards the /admin dashboard',
 		schema: v.optional(v.string())
 	},
-	COOLIFY_URL: {
-		description: 'Base URL of the Coolify instance that hosts this app',
+	DEPLOY_URL: {
+		description: 'Vercel deploy trigger URL — lets the admin dashboard trigger a redeploy',
 		schema: v.optional(v.string())
-	},
-	COOLIFY_TOKEN: {
-		description: 'Coolify API token — lets the admin dashboard trigger a redeploy',
-		schema: v.optional(v.string())
-	},
-	COOLIFY_TAG: {
-		description: 'Tag of the Coolify application to redeploy when the diary changes',
-		schema: v.optional(v.string(), 'dreams')
 	}
 });
