@@ -24,7 +24,7 @@
 		"@fontsource-variable/karla": "^5.2.8",
 		"@fontsource/gloock": "^5.2.8",
 		"@playwright/test": "^1.60.0",
-		"@sveltejs/adapter-node": "next",
+		"@sveltejs/adapter-vercel": "^6.3.3",
 		"@sveltejs/kit": "next",
 		"@sveltejs/vite-plugin-svelte": "^7.1.2",
 		"@types/node": "^24",
